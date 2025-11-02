@@ -1,0 +1,57 @@
+# ═══════════════════════════════════════════════════════════
+# MENTAL HEALTH ANNOTATION SYSTEM - SETTINGS CONFIGURATION
+# ═══════════════════════════════════════════════════════════
+
+# ────────────────────────────────────────────────────────
+# AI MODEL CONFIGURATION
+# ────────────────────────────────────────────────────────
+model:
+  name: gemma-3-27b-it       # IMPORTANT: Do not change - exact model from original system
+  provider: google            # Google AI (Gemini API)
+  temperature: 0.7
+  max_tokens: 2048
+
+# ────────────────────────────────────────────────────────
+# DATA SOURCE CONFIGURATION (Local Excel File)
+# ────────────────────────────────────────────────────────
+data:
+  source_type: excel          # Use local Excel file
+  excel_path: data/mhelp_dataset.xlsx   # Path to Excel file
+  sheets:                     # Sheet names to load
+    - Train
+    - Validation
+    - Test
+  id_column: ID               # Column name for sample IDs
+  text_column: Text           # Column name for text data
+
+# ────────────────────────────────────────────────────────
+# OUTPUT CONFIGURATION
+# ────────────────────────────────────────────────────────
+output:
+  type: excel                 # Output to Excel files
+  directory: output           # Output directory
+  filename_template: "annotations_annotator_{annotator_id}_{domain}_{timestamp}.xlsx"
+
+# ────────────────────────────────────────────────────────
+# REDIS CONFIGURATION
+# ────────────────────────────────────────────────────────
+redis:
+  host: localhost
+  port: 6379
+  db_broker: 0      # Celery broker database
+  db_backend: 1     # Celery result backend database
+  password: null    # Set if Redis requires authentication
+
+celery:
+  task_time_limit: 300            # Hard time limit (5 minutes)
+  task_soft_time_limit: 240       # Soft time limit (4 minutes)
+  worker_prefetch_multiplier: 1   # Even distribution of tasks
+  task_acks_late: true            # Enable crash recovery
+  task_reject_on_worker_lost: true
+
+logging:
+  level: INFO                     # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: logs/annotator.log
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  max_bytes: 10485760            # 10MB
+  backup_count: 5

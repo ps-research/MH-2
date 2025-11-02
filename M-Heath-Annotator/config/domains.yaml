@@ -1,0 +1,552 @@
+# ═══════════════════════════════════════════════════════════
+# MENTAL HEALTH ANNOTATION SYSTEM - DOMAIN CONFIGURATION
+# ═══════════════════════════════════════════════════════════
+#
+# EXACT PROMPTS FROM ORIGINAL SYSTEM - DO NOT MODIFY
+#
+
+domains:
+  urgency:
+    name: Urgency Level Assessment
+    prompt_template: |
+      You are an expert mental health triage specialist working with a university counseling service. Your role is to assess the URGENCY LEVEL of student mental health cases to prioritize counselor appointments.
+
+      ═══════════════════════════════════════════════════════════
+      URGENCY LEVELS DEFINITION
+      ═══════════════════════════════════════════════════════════
+
+      Level 4: CRITICAL - Immediate Intervention (Within 24 Hours)
+      • Active suicidal ideation WITH specific plan or intent
+      • Current self-harm behaviors (cutting, burning, etc.)
+      • Acute psychotic episode or severe dissociation
+      • Immediate danger to self or others
+      • Phrases like: "I'm going to kill myself", "tonight", "I have a plan", "goodbye"
+      → ACTION: Emergency contact, crisis hotline, see TODAY
+
+      Level 3: URGENT - Priority Scheduling (Within 2-3 Days)
+      • Severe symptoms with MAJOR functional impairment
+      • Passive suicidal thoughts ("wish I was dead" but no plan)
+      • Severe anxiety/panic preventing daily activities (can't attend class, leave room)
+      • Multiple comorbid conditions with high distress
+      • Rapid deterioration of mental state
+      → ACTION: Fast-track appointment, specialized counselor
+
+      Level 2: MODERATE - Standard Scheduling (Within 1-2 Weeks)
+      • Clear mental health symptoms needing professional help
+      • Functional impairment (struggling with studies/relationships)
+      • Persistent depression, anxiety, trauma symptoms (weeks/months)
+      • Should be in regular therapy but not emergency
+      → ACTION: Standard appointment queue
+
+      Level 1: LOW - Can Wait / Group Sessions (Within 3-4 Weeks)
+      • Mild symptoms, early intervention beneficial
+      • Could benefit from brief counseling or group therapy
+      • Not currently in crisis, coping mostly intact
+      • Seeking support but managing day-to-day
+      → ACTION: Group sessions, peer support, or individual when available
+
+      Level 0: SELF-HELP - No Counselor Needed
+      • General stress, exam anxiety (normal range)
+      • Seeking advice or validation
+      • Can manage with resources (apps, workshops, peer support)
+      • No indication of mental health condition
+      → ACTION: Refer to self-help resources, psychoeducation
+
+      ═══════════════════════════════════════════════════════════
+      ANNOTATION GUIDELINES - CRITICAL INSTRUCTIONS
+      ═══════════════════════════════════════════════════════════
+
+      STEP 1: READ CAREFULLY
+      • Read the ENTIRE student text word by word
+      • Note every mention of: suicide, self-harm, crisis words, timeframes
+
+      STEP 2: ANALYZE SENTENCE BY SENTENCE
+      • For EACH sentence, identify:
+        - Risk indicators (suicide, self-harm, danger)
+        - Severity markers ("can't", "always", "never", "worst")
+        - Temporal urgency ("tonight", "today", "right now")
+        - Functional impairment (can't work, study, leave bed)
+        - Duration (days vs weeks vs months)
+
+      STEP 3: CITE SPECIFIC PHRASES
+      • You MUST quote exact phrases from the text that justify your decision
+      • Use quotation marks: "exact phrase from text"
+      • For each level consideration, cite supporting evidence
+
+      STEP 4: DIFFERENTIATE BETWEEN LEVELS
+      • Level 4 vs 3: Does text mention SPECIFIC PLAN or just thoughts?
+      • Level 3 vs 2: Is functional impairment SEVERE (can't function) or MODERATE (struggling)?
+      • Level 2 vs 1: Are symptoms PERSISTENT (weeks+) or MILD/RECENT?
+      • Level 1 vs 0: Any indication of clinical distress vs normal stress?
+
+      STEP 5: CONSIDER RISK FACTORS
+      • Immediacy: "tonight", "today" = Level 4
+      • Specificity of plan: "I have pills" = Level 4
+      • Passive ideation: "wish I was dead" = Level 3
+      • Hopelessness + impairment = Level 3
+      • Chronic symptoms + struggling = Level 2
+      • Seeking support, coping = Level 1
+      • No distress indicators = Level 0
+
+      STEP 6: PROVIDE DETAILED REASONING
+      Write a comprehensive analysis covering:
+      1. Key phrases you identified (with quotes)
+      2. Risk level assessment
+      3. Functional impairment level
+      4. Why you ruled out other levels
+      5. Final decision with clear justification
+
+      STEP 7: OUTPUT FORMAT (STRICTLY REQUIRED)
+      End your response with the urgency level in this EXACT format:
+
+      <<LEVEL_X>>
+
+      Where X is 0, 1, 2, 3, or 4
+
+      ═══════════════════════════════════════════════════════════
+      STUDENT TEXT TO ANALYZE
+      ═══════════════════════════════════════════════════════════
+
+      {text}
+
+      ═══════════════════════════════════════════════════════════
+      YOUR DETAILED ANALYSIS
+      ═══════════════════════════════════════════════════════════
+    validation:
+      pattern: 'LEVEL[_\s]*([0-4])'
+      type: single
+      valid_codes:
+        - LEVEL_0
+        - LEVEL_1
+        - LEVEL_2
+        - LEVEL_3
+        - LEVEL_4
+
+  therapeutic:
+    name: Therapeutic Approach Selection
+    prompt_template: |
+      You are a clinical psychologist specializing in treatment planning. Your task is to identify which THERAPEUTIC APPROACHES would be beneficial for this student.
+
+      ═══════════════════════════════════════════════════════════
+      THERAPEUTIC APPROACHES TAXONOMY
+      ═══════════════════════════════════════════════════════════
+
+      TA-1: Cognitive Behavioral Therapy (CBT)
+      • Best for: GAD, MDD, OCD, panic disorder
+      • Focus: Identifying and changing negative thought patterns
+      • Indicators: Rumination, catastrophizing, black-and-white thinking, avoidance
+
+      TA-2: Dialectical Behavior Therapy (DBT)
+      • Best for: BPD, emotion dysregulation, self-harm, suicidal ideation
+      • Focus: Distress tolerance, emotional regulation, interpersonal effectiveness
+      • Indicators: Intense emotions, self-harm, impulsivity, unstable relationships
+
+      TA-3: Trauma-Focused Therapy (EMDR, CPT)
+      • Best for: PTSD, complex trauma, abuse survivors
+      • Focus: Processing traumatic memories, reducing trauma symptoms
+      • Indicators: Flashbacks, nightmares, trauma history, hypervigilance
+
+      TA-4: Interpersonal Therapy (IPT)
+      • Best for: MDD with relationship issues, grief, role transitions
+      • Focus: Improving interpersonal relationships and social functioning
+      • Indicators: Relationship conflicts, social isolation, grief, life transitions
+
+      TA-5: Acceptance and Commitment Therapy (ACT)
+      • Best for: GAD, MDD, chronic stress, existential concerns
+      • Focus: Psychological flexibility, mindfulness, values-based action
+      • Indicators: Avoidance behaviors, struggles with acceptance, lack of direction
+
+      TA-6: Family Systems Therapy
+      • Best for: Family conflict, cultural issues, developmental stages
+      • Focus: Family dynamics, communication patterns
+      • Indicators: Family conflict mentioned, cultural stressors, family involvement needed
+
+      TA-7: Psychoeducation
+      • Best for: All cases, especially new diagnoses
+      • Focus: Understanding condition, self-management, coping skills
+      • Indicators: Lack of understanding about mental health, seeking information
+
+      TA-8: Motivational Interviewing
+      • Best for: SUD, treatment resistance, ambivalence about change
+      • Focus: Building motivation, resolving ambivalence
+      • Indicators: Substance use, resistance to help, ambivalence
+
+      TA-9: Supportive Counseling
+      • Best for: Adjustment issues, life transitions, low distress
+      • Focus: Validation, emotional support, problem-solving
+      • Indicators: Life stressors, need for support, no specific disorder
+
+      ═══════════════════════════════════════════════════════════
+      ANNOTATION GUIDELINES
+      ═══════════════════════════════════════════════════════════
+
+      1. IDENTIFY INDICATORS: Quote phrases suggesting each approach
+      2. SELECT MULTIPLE: This is MULTI-LABEL - select ALL applicable therapies
+      3. PRIORITIZE: Mention which is PRIMARY vs ADJUNCT
+      4. CITE EVIDENCE: For each selected approach, quote supporting text
+      5. EXPLAIN EXCLUSIONS: Why certain approaches were NOT selected
+
+      CRITICAL DISTINCTIONS:
+      • CBT vs ACT: CBT changes thoughts, ACT accepts them
+      • DBT vs CBT: DBT for emotion dysregulation/self-harm, CBT for thought patterns
+      • Trauma therapy: Only if explicit trauma mentioned
+      • Psychoeducation: Almost always include for new/confused cases
+
+      OUTPUT FORMAT (STRICTLY REQUIRED):
+      End with selected approaches in this format:
+
+      <<TA-1, TA-3, TA-7>>
+
+      Use ONLY codes: TA-1, TA-2, TA-3, TA-4, TA-5, TA-6, TA-7, TA-8, TA-9
+      Separate multiple codes with commas
+      At least ONE approach must be selected
+
+      ═══════════════════════════════════════════════════════════
+      STUDENT TEXT
+      ═══════════════════════════════════════════════════════════
+
+      {text}
+
+      ═══════════════════════════════════════════════════════════
+      YOUR ANALYSIS
+      ═══════════════════════════════════════════════════════════
+    validation:
+      pattern: 'TA-([1-9])'
+      type: multi
+      valid_codes:
+        - TA-1
+        - TA-2
+        - TA-3
+        - TA-4
+        - TA-5
+        - TA-6
+        - TA-7
+        - TA-8
+        - TA-9
+
+  intensity:
+    name: Intervention Intensity Level
+    prompt_template: |
+      You are a mental health treatment coordinator. Determine the appropriate INTENSITY of intervention needed.
+
+      ═══════════════════════════════════════════════════════════
+      INTERVENTION INTENSITY LEVELS
+      ═══════════════════════════════════════════════════════════
+
+      INT-1: Self-Guided Resources
+      • Apps (Headspace, Calm), workbooks, online modules
+      • Minimal or no professional involvement
+      • Indicators: Mild symptoms, high functioning, self-motivated
+
+      INT-2: Brief Intervention (1-3 sessions)
+      • Problem-focused, solution-oriented
+      • Specific issue with clear endpoint
+      • Indicators: Acute stressor, single issue, good coping skills
+
+      INT-3: Short-Term Therapy (6-12 sessions)
+      • Structured treatment protocol
+      • Weekly sessions over 2-3 months
+      • Indicators: Moderate symptoms, responsive to treatment, time-limited goals
+
+      INT-4: Long-Term Therapy (12+ sessions)
+      • Complex cases, multiple comorbidities
+      • Ongoing weekly sessions for months
+      • Indicators: Chronic issues, treatment resistance, complex trauma, personality disorders
+
+      INT-5: Intensive Outpatient Program
+      • Multiple sessions per week (3-5 days)
+      • Structured program with group + individual
+      • Indicators: Severe symptoms, high risk, needs intensive support
+
+      ═══════════════════════════════════════════════════════════
+      DECISION CRITERIA
+      ═══════════════════════════════════════════════════════════
+
+      Consider:
+      1. SEVERITY: How distressing are the symptoms?
+      2. CHRONICITY: Days vs weeks vs months vs years?
+      3. COMPLEXITY: Single issue vs multiple comorbidities?
+      4. FUNCTIONAL IMPAIRMENT: Mild impact vs severe disruption?
+      5. RISK LEVEL: Self-harm risk, suicide risk?
+      6. SUPPORT SYSTEM: Strong support vs isolated?
+      7. PRIOR TREATMENT: New case vs treatment-resistant?
+
+      CRITICAL DISTINCTIONS:
+      • INT-1 vs INT-2: Self-guided vs needs professional guidance
+      • INT-2 vs INT-3: Acute/specific vs ongoing/broader issues
+      • INT-3 vs INT-4: Moderate vs severe/complex
+      • INT-4 vs INT-5: Weekly sessions sufficient vs needs daily support
+
+      OUTPUT FORMAT:
+      End with intensity level in this format:
+
+      <<INT-X>>
+
+      Where X is 1, 2, 3, 4, or 5
+      ONLY ONE level must be selected
+
+      ═══════════════════════════════════════════════════════════
+      STUDENT TEXT
+      ═══════════════════════════════════════════════════════════
+
+      {text}
+
+      ═══════════════════════════════════════════════════════════
+      YOUR ANALYSIS
+      ═══════════════════════════════════════════════════════════
+    validation:
+      pattern: 'INT-([1-5])'
+      type: single
+      valid_codes:
+        - INT-1
+        - INT-2
+        - INT-3
+        - INT-4
+        - INT-5
+
+  adjunct:
+    name: Adjunct Services
+    prompt_template: |
+      You are a mental health case coordinator. Identify ADJUNCT SERVICES (additional supports) needed alongside therapy.
+
+      ═══════════════════════════════════════════════════════════
+      ADJUNCT SERVICES TAXONOMY
+      ═══════════════════════════════════════════════════════════
+
+      ADJ-1: Psychiatric Consultation (Medication Evaluation)
+      • For: Severe depression, anxiety, psychosis, bipolar
+      • Indicators: Not responding to therapy alone, severe symptoms, mentions medication
+
+      ADJ-2: Medical Referral (Primary Care, Specialists)
+      • For: Sleep disorders, endocrine issues, neurological symptoms
+      • Indicators: Physical symptoms, fatigue, sleep issues, chronic pain
+
+      ADJ-3: Academic Accommodations
+      • For: Students with MH affecting studies
+      • Indicators: Can't attend class, struggling with deadlines, academic stress
+
+      ADJ-4: Peer Support Groups
+      • For: Shared experiences, reducing isolation
+      • Indicators: Loneliness, seeking connection, specific condition (LGBTQ+, grief)
+
+      ADJ-5: Crisis Hotline / Safety Planning
+      • For: Suicide risk, self-harm risk
+      • Indicators: Suicidal thoughts, crisis mentions, high risk
+
+      ADJ-6: Substance Use Treatment
+      • For: Alcohol/drug use disorders
+      • Indicators: Mentions substance use, addiction, struggling with use
+
+      ADJ-7: Nutritional Counseling
+      • For: Eating disorders
+      • Indicators: Anorexia, bulimia, body image issues, food restriction
+
+      ADJ-8: Occupational Therapy / Skills Training
+      • For: ASD, ADHD, developmental needs
+      • Indicators: Neurodevelopmental disorder, executive function issues
+
+      ═══════════════════════════════════════════════════════════
+      ANNOTATION GUIDELINES
+      ═══════════════════════════════════════════════════════════
+
+      1. SELECT ALL APPLICABLE: This is multi-label
+      2. QUOTE SUPPORTING EVIDENCE: For each selected service
+      3. PRIORITIZE: Which are ESSENTIAL vs RECOMMENDED?
+      4. NONE IS VALID: If no adjunct services needed, output <<NONE>>
+
+      OUTPUT FORMAT:
+      End with selected services:
+
+      <<ADJ-1, ADJ-3, ADJ-5>>
+
+      OR if none needed:
+
+      <<NONE>>
+
+      ═══════════════════════════════════════════════════════════
+      STUDENT TEXT
+      ═══════════════════════════════════════════════════════════
+
+      {text}
+
+      ═══════════════════════════════════════════════════════════
+      YOUR ANALYSIS
+      ═══════════════════════════════════════════════════════════
+    validation:
+      pattern: 'ADJ-([1-8])|NONE'
+      type: multi
+      valid_codes:
+        - ADJ-1
+        - ADJ-2
+        - ADJ-3
+        - ADJ-4
+        - ADJ-5
+        - ADJ-6
+        - ADJ-7
+        - ADJ-8
+        - NONE
+
+  modality:
+    name: Treatment Modality
+    prompt_template: |
+      You are a treatment planning specialist. Determine the appropriate TREATMENT MODALITY (format of therapy delivery).
+
+      ═══════════════════════════════════════════════════════════
+      TREATMENT MODALITIES
+      ═══════════════════════════════════════════════════════════
+
+      MOD-1: Individual Therapy
+      • One-on-one with therapist
+      • Indicators: Personal issues, need for privacy, deep work
+
+      MOD-2: Group Therapy
+      • Multiple clients, shared theme
+      • Indicators: Seeking connection, shared experience (depression, anxiety, grief)
+
+      MOD-3: Family Therapy
+      • Involves family members
+      • Indicators: Family conflict, communication issues, family-based trauma
+
+      MOD-4: Couples Therapy
+      • For romantic relationships
+      • Indicators: Relationship issues with partner, breakup distress
+
+      MOD-5: Online/Teletherapy
+      • Remote sessions
+      • Indicators: Transportation issues, preference for online, anxiety about in-person
+
+      MOD-6: Workshop / Skills Training
+      • Educational group format
+      • Indicators: Needs specific skills (stress management, social skills)
+
+      ═══════════════════════════════════════════════════════════
+      DECISION CRITERIA
+      ═══════════════════════════════════════════════════════════
+
+      1. MOST cases need MOD-1 (Individual) as primary
+      2. Add MOD-2 (Group) if loneliness or shared experience beneficial
+      3. MOD-3 (Family) only if family dynamics explicitly mentioned
+      4. MOD-4 (Couples) only if relationship distress with partner
+      5. MOD-5 (Online) if access barriers or explicit preference
+      6. MOD-6 (Workshop) as supplement for skills building
+
+      OUTPUT FORMAT:
+      End with selected modalities:
+
+      <<MOD-1, MOD-2>>
+
+      At least ONE modality must be selected
+
+      ═══════════════════════════════════════════════════════════
+      STUDENT TEXT
+      ═══════════════════════════════════════════════════════════
+
+      {text}
+
+      ═══════════════════════════════════════════════════════════
+      YOUR ANALYSIS
+      ═══════════════════════════════════════════════════════════
+    validation:
+      pattern: 'MOD-([1-6])'
+      type: multi
+      valid_codes:
+        - MOD-1
+        - MOD-2
+        - MOD-3
+        - MOD-4
+        - MOD-5
+        - MOD-6
+
+  redressal:
+    name: Redressal Points Extraction
+    prompt_template: |
+      You are a mental health assessment specialist. Your task is to extract REDRESSAL POINTS - specific issues, concerns, or needs that require attention in therapy.
+
+      ═══════════════════════════════════════════════════════════
+      WHAT ARE REDRESSAL POINTS?
+      ═══════════════════════════════════════════════════════════
+
+      Redressal points are the CORE ISSUES that therapy should address. Think of them as:
+      • Specific problems needing resolution
+      • Sources of distress
+      • Skill deficits
+      • Relationship concerns
+      • Behavioral patterns to change
+      • Coping needs
+
+      ═══════════════════════════════════════════════════════════
+      EXTRACTION GUIDELINES
+      ═══════════════════════════════════════════════════════════
+
+      1. READ ENTIRE TEXT: Identify all mentions of problems/concerns
+
+      2. EXTRACT SPECIFIC POINTS:
+         ✓ "Social anxiety affecting academic performance"
+         ✓ "Trauma from childhood abuse"
+         ✓ "Difficulty regulating emotions"
+         ✓ "Lack of coping strategies for exam stress"
+         ✓ "Family conflict causing distress"
+         ✓ "Suicidal thoughts related to breakup"
+
+         ✗ "Depression" (too vague - be specific about what aspect)
+         ✗ "Mental health" (not specific)
+
+      3. BE DESCRIPTIVE BUT CONCISE:
+         • Each point should be 5-15 words
+         • Capture the essence of the problem
+         • Link symptoms to impact when possible
+
+      4. ORGANIZE BY PRIORITY:
+         • Most urgent/severe issues first
+         • Secondary concerns later
+
+      5. TYPICAL COUNT: 3-7 points per case
+         • Simple case: 2-3 points
+         • Complex case: 5-8 points
+
+      ═══════════════════════════════════════════════════════════
+      EXAMPLES
+      ═══════════════════════════════════════════════════════════
+
+      Example 1:
+      Text: "I've been depressed since my breakup. I can't focus on studies and I'm failing classes."
+      Points:
+      • "Depression following romantic relationship breakup"
+      • "Academic performance decline due to depression"
+      • "Difficulty concentrating on studies"
+
+      Example 2:
+      Text: "I have panic attacks when I try to go to class. My family doesn't understand."
+      Points:
+      • "Panic attacks triggered by attending class"
+      • "Social anxiety preventing academic participation"
+      • "Lack of family understanding and support"
+
+      ═══════════════════════════════════════════════════════════
+      OUTPUT FORMAT (STRICTLY REQUIRED)
+      ═══════════════════════════════════════════════════════════
+
+      After your analysis, provide the list in this EXACT format:
+
+      <<["point 1", "point 2", "point 3"]>>
+
+      CRITICAL:
+      • Valid JSON array of strings
+      • Use double quotes for strings
+      • Each point in one line (no line breaks within strings)
+      • At least 2 points, maximum 10 points
+
+      ═══════════════════════════════════════════════════════════
+      STUDENT TEXT
+      ═══════════════════════════════════════════════════════════
+
+      {text}
+
+      ═══════════════════════════════════════════════════════════
+      YOUR ANALYSIS
+      ═══════════════════════════════════════════════════════════
+    validation:
+      pattern: '\[.*\]'
+      type: single
+      valid_codes:
+        - json_array

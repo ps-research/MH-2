@@ -1,0 +1,42 @@
+# ═══════════════════════════════════════════════════════════
+# MENTAL HEALTH ANNOTATION SYSTEM - ANNOTATOR CONFIGURATION
+# ═══════════════════════════════════════════════════════════
+#
+# Configure each annotator with API credentials and rate limits
+#
+
+annotators:
+  1:
+    name: Annotator One
+    api_key: YOUR_API_KEY_HERE_1  # Replace with actual Gemini API key
+    email: annotator1@example.com
+    rate_limit: 60                 # Requests per minute
+    max_retries: 3
+
+  2:
+    name: Annotator Two
+    api_key: YOUR_API_KEY_HERE_2
+    email: annotator2@example.com
+    rate_limit: 60
+    max_retries: 3
+
+  3:
+    name: Annotator Three
+    api_key: YOUR_API_KEY_HERE_3
+    email: annotator3@example.com
+    rate_limit: 60
+    max_retries: 3
+
+  4:
+    name: Annotator Four
+    api_key: YOUR_API_KEY_HERE_4
+    email: annotator4@example.com
+    rate_limit: 60
+    max_retries: 3
+
+  5:
+    name: Annotator Five
+    api_key: YOUR_API_KEY_HERE_5
+    email: annotator5@example.com
+    rate_limit: 60
+    max_retries: 3
