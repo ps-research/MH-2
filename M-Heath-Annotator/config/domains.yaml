@@ -1,0 +1,240 @@
+# ═══════════════════════════════════════════════════════════
+# MENTAL HEALTH ANNOTATION SYSTEM - DOMAIN CONFIGURATION
+# ═══════════════════════════════════════════════════════════
+#
+# Configure annotation domains with prompts and validation rules
+#
+
+domains:
+  urgency:
+    name: Urgency Level Assessment
+    prompt_template: |
+      You are an expert mental health triage specialist. Assess the URGENCY LEVEL of this student mental health case.
+
+      URGENCY LEVELS:
+      Level 4: CRITICAL - Active suicidal ideation WITH plan, current self-harm, acute psychosis (Within 24 hours)
+      Level 3: URGENT - Severe symptoms, major impairment, passive suicidal thoughts (Within 2-3 days)
+      Level 2: MODERATE - Clear mental health symptoms needing professional help (Within 1-2 weeks)
+      Level 1: LOW - Mild symptoms, early intervention beneficial (Within 3-4 weeks)
+      Level 0: SELF-HELP - General stress, can manage with resources
+
+      CRITICAL INSTRUCTIONS:
+      1. Read the ENTIRE text carefully
+      2. Quote specific phrases that justify your decision
+      3. Differentiate between levels based on:
+         - Immediacy of risk
+         - Specificity of suicidal plan
+         - Functional impairment severity
+         - Duration of symptoms
+      4. Provide detailed reasoning
+      5. End with: <<LEVEL_X>> where X is 0-4
+
+      STUDENT TEXT:
+      {text}
+
+      YOUR ANALYSIS:
+    validation:
+      pattern: 'LEVEL[_\s]*([0-4])'
+      type: single
+      valid_codes:
+        - LEVEL_0
+        - LEVEL_1
+        - LEVEL_2
+        - LEVEL_3
+        - LEVEL_4
+
+  therapeutic:
+    name: Therapeutic Approach Selection
+    prompt_template: |
+      You are a clinical psychologist. Identify THERAPEUTIC APPROACHES beneficial for this student.
+
+      THERAPEUTIC APPROACHES:
+      TA-1: Cognitive Behavioral Therapy (CBT) - Negative thought patterns, rumination
+      TA-2: Dialectical Behavior Therapy (DBT) - Emotion dysregulation, self-harm, BPD
+      TA-3: Trauma-Focused Therapy - PTSD, trauma history, flashbacks
+      TA-4: Interpersonal Therapy (IPT) - Relationship issues, grief, social functioning
+      TA-5: Acceptance and Commitment Therapy (ACT) - Avoidance, acceptance struggles
+      TA-6: Family Systems Therapy - Family conflict, cultural issues
+      TA-7: Psychoeducation - Understanding condition, self-management
+      TA-8: Motivational Interviewing - Substance use, ambivalence about change
+      TA-9: Supportive Counseling - Adjustment issues, life transitions
+
+      GUIDELINES:
+      - This is MULTI-LABEL: select ALL applicable therapies
+      - Quote supporting evidence for each selection
+      - Indicate PRIMARY vs ADJUNCT approaches
+      - Explain why certain approaches were NOT selected
+
+      OUTPUT FORMAT: <<TA-1, TA-3, TA-7>>
+
+      STUDENT TEXT:
+      {text}
+
+      YOUR ANALYSIS:
+    validation:
+      pattern: 'TA-([1-9])'
+      type: multi
+      valid_codes:
+        - TA-1
+        - TA-2
+        - TA-3
+        - TA-4
+        - TA-5
+        - TA-6
+        - TA-7
+        - TA-8
+        - TA-9
+
+  intensity:
+    name: Intervention Intensity Level
+    prompt_template: |
+      You are a mental health treatment coordinator. Determine INTENSITY of intervention needed.
+
+      INTERVENTION INTENSITY LEVELS:
+      INT-1: Self-Guided Resources - Apps, workbooks, minimal professional involvement
+      INT-2: Brief Intervention - 1-3 sessions, problem-focused
+      INT-3: Short-Term Therapy - 6-12 sessions, structured protocol
+      INT-4: Long-Term Therapy - 12+ sessions, complex cases, comorbidities
+      INT-5: Intensive Outpatient - 3-5 days/week, structured program
+
+      DECISION CRITERIA:
+      - Severity of symptoms
+      - Chronicity (days vs months vs years)
+      - Complexity (single issue vs comorbidities)
+      - Functional impairment level
+      - Risk level
+      - Prior treatment response
+
+      OUTPUT FORMAT: <<INT-X>> where X is 1-5
+
+      STUDENT TEXT:
+      {text}
+
+      YOUR ANALYSIS:
+    validation:
+      pattern: 'INT-([1-5])'
+      type: single
+      valid_codes:
+        - INT-1
+        - INT-2
+        - INT-3
+        - INT-4
+        - INT-5
+
+  adjunct:
+    name: Adjunct Services
+    prompt_template: |
+      You are a mental health case coordinator. Identify ADJUNCT SERVICES needed alongside therapy.
+
+      ADJUNCT SERVICES:
+      ADJ-1: Psychiatric Consultation - Medication evaluation
+      ADJ-2: Medical Referral - Primary care, specialists
+      ADJ-3: Academic Accommodations - Study support, deadline extensions
+      ADJ-4: Peer Support Groups - Shared experiences, reduce isolation
+      ADJ-5: Crisis Hotline / Safety Planning - Suicide/self-harm risk
+      ADJ-6: Substance Use Treatment - Addiction services
+      ADJ-7: Nutritional Counseling - Eating disorders
+      ADJ-8: Occupational Therapy - Skills training, executive function
+
+      GUIDELINES:
+      - This is MULTI-LABEL: select ALL applicable services
+      - Quote supporting evidence
+      - Prioritize: ESSENTIAL vs RECOMMENDED
+      - If no services needed, output: <<NONE>>
+
+      OUTPUT FORMAT: <<ADJ-1, ADJ-3, ADJ-5>> or <<NONE>>
+
+      STUDENT TEXT:
+      {text}
+
+      YOUR ANALYSIS:
+    validation:
+      pattern: 'ADJ-([1-8])|NONE'
+      type: multi
+      valid_codes:
+        - ADJ-1
+        - ADJ-2
+        - ADJ-3
+        - ADJ-4
+        - ADJ-5
+        - ADJ-6
+        - ADJ-7
+        - ADJ-8
+        - NONE
+
+  modality:
+    name: Treatment Modality
+    prompt_template: |
+      You are a treatment planning specialist. Determine TREATMENT MODALITY (format of therapy delivery).
+
+      TREATMENT MODALITIES:
+      MOD-1: Individual Therapy - One-on-one with therapist
+      MOD-2: Group Therapy - Multiple clients, shared theme
+      MOD-3: Family Therapy - Involves family members
+      MOD-4: Couples Therapy - Romantic relationships
+      MOD-5: Online/Teletherapy - Remote sessions
+      MOD-6: Workshop / Skills Training - Educational group format
+
+      DECISION CRITERIA:
+      - Most cases need MOD-1 (Individual) as primary
+      - Add MOD-2 (Group) if loneliness or shared experience beneficial
+      - MOD-3 (Family) only if family dynamics explicitly mentioned
+      - MOD-4 (Couples) only if relationship distress with partner
+      - MOD-5 (Online) if access barriers or explicit preference
+      - MOD-6 (Workshop) as supplement for skills building
+
+      OUTPUT FORMAT: <<MOD-1, MOD-2>>
+
+      STUDENT TEXT:
+      {text}
+
+      YOUR ANALYSIS:
+    validation:
+      pattern: 'MOD-([1-6])'
+      type: multi
+      valid_codes:
+        - MOD-1
+        - MOD-2
+        - MOD-3
+        - MOD-4
+        - MOD-5
+        - MOD-6
+
+  redressal:
+    name: Redressal Points Extraction
+    prompt_template: |
+      You are a mental health assessment specialist. Extract REDRESSAL POINTS - specific issues requiring attention.
+
+      WHAT ARE REDRESSAL POINTS?
+      - Core issues therapy should address
+      - Specific problems needing resolution
+      - Sources of distress
+      - Skill deficits
+      - Relationship concerns
+      - Behavioral patterns to change
+
+      EXTRACTION GUIDELINES:
+      1. Identify all mentions of problems/concerns
+      2. Be specific and descriptive (5-15 words each)
+      3. Link symptoms to impact when possible
+      4. Organize by priority (urgent → secondary)
+      5. Typical count: 2-7 points per case
+
+      EXAMPLES:
+      ✓ "Social anxiety affecting academic performance"
+      ✓ "Trauma from childhood abuse"
+      ✓ "Difficulty regulating emotions"
+      ✗ "Depression" (too vague)
+
+      OUTPUT FORMAT: <<["point 1", "point 2", "point 3"]>>
+      Must be valid JSON array of strings, 2-10 points
+
+      STUDENT TEXT:
+      {text}
+
+      YOUR ANALYSIS:
+    validation:
+      pattern: '\[.*\]'
+      type: single
+      valid_codes:
+        - json_array

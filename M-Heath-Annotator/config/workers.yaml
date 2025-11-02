@@ -1,0 +1,228 @@
+# ═══════════════════════════════════════════════════════════
+# MENTAL HEALTH ANNOTATION SYSTEM - WORKER CONFIGURATION
+# ═══════════════════════════════════════════════════════════
+#
+# Configure worker pools for each annotator-domain pair
+# Total: 5 annotators × 6 domains = 30 workers
+#
+
+worker_pools:
+  annotator_1:
+    domains:
+      urgency:
+        enabled: true
+        concurrency: 1
+        queue: annotator_1_urgency
+        sample_limit: null      # Process all samples
+        batch_size: 1
+
+      therapeutic:
+        enabled: true
+        concurrency: 1
+        queue: annotator_1_therapeutic
+        sample_limit: null
+        batch_size: 1
+
+      intensity:
+        enabled: true
+        concurrency: 1
+        queue: annotator_1_intensity
+        sample_limit: null
+        batch_size: 1
+
+      adjunct:
+        enabled: true
+        concurrency: 1
+        queue: annotator_1_adjunct
+        sample_limit: null
+        batch_size: 1
+
+      modality:
+        enabled: true
+        concurrency: 1
+        queue: annotator_1_modality
+        sample_limit: null
+        batch_size: 1
+
+      redressal:
+        enabled: true
+        concurrency: 1
+        queue: annotator_1_redressal
+        sample_limit: null
+        batch_size: 1
+
+  annotator_2:
+    domains:
+      urgency:
+        enabled: true
+        concurrency: 1
+        queue: annotator_2_urgency
+        sample_limit: null
+        batch_size: 1
+
+      therapeutic:
+        enabled: true
+        concurrency: 1
+        queue: annotator_2_therapeutic
+        sample_limit: null
+        batch_size: 1
+
+      intensity:
+        enabled: true
+        concurrency: 1
+        queue: annotator_2_intensity
+        sample_limit: null
+        batch_size: 1
+
+      adjunct:
+        enabled: true
+        concurrency: 1
+        queue: annotator_2_adjunct
+        sample_limit: null
+        batch_size: 1
+
+      modality:
+        enabled: true
+        concurrency: 1
+        queue: annotator_2_modality
+        sample_limit: null
+        batch_size: 1
+
+      redressal:
+        enabled: true
+        concurrency: 1
+        queue: annotator_2_redressal
+        sample_limit: null
+        batch_size: 1
+
+  annotator_3:
+    domains:
+      urgency:
+        enabled: true
+        concurrency: 1
+        queue: annotator_3_urgency
+        sample_limit: null
+        batch_size: 1
+
+      therapeutic:
+        enabled: true
+        concurrency: 1
+        queue: annotator_3_therapeutic
+        sample_limit: null
+        batch_size: 1
+
+      intensity:
+        enabled: true
+        concurrency: 1
+        queue: annotator_3_intensity
+        sample_limit: null
+        batch_size: 1
+
+      adjunct:
+        enabled: true
+        concurrency: 1
+        queue: annotator_3_adjunct
+        sample_limit: null
+        batch_size: 1
+
+      modality:
+        enabled: true
+        concurrency: 1
+        queue: annotator_3_modality
+        sample_limit: null
+        batch_size: 1
+
+      redressal:
+        enabled: true
+        concurrency: 1
+        queue: annotator_3_redressal
+        sample_limit: null
+        batch_size: 1
+
+  annotator_4:
+    domains:
+      urgency:
+        enabled: true
+        concurrency: 1
+        queue: annotator_4_urgency
+        sample_limit: null
+        batch_size: 1
+
+      therapeutic:
+        enabled: true
+        concurrency: 1
+        queue: annotator_4_therapeutic
+        sample_limit: null
+        batch_size: 1
+
+      intensity:
+        enabled: true
+        concurrency: 1
+        queue: annotator_4_intensity
+        sample_limit: null
+        batch_size: 1
+
+      adjunct:
+        enabled: true
+        concurrency: 1
+        queue: annotator_4_adjunct
+        sample_limit: null
+        batch_size: 1
+
+      modality:
+        enabled: true
+        concurrency: 1
+        queue: annotator_4_modality
+        sample_limit: null
+        batch_size: 1
+
+      redressal:
+        enabled: true
+        concurrency: 1
+        queue: annotator_4_redressal
+        sample_limit: null
+        batch_size: 1
+
+  annotator_5:
+    domains:
+      urgency:
+        enabled: true
+        concurrency: 1
+        queue: annotator_5_urgency
+        sample_limit: null
+        batch_size: 1
+
+      therapeutic:
+        enabled: true
+        concurrency: 1
+        queue: annotator_5_therapeutic
+        sample_limit: null
+        batch_size: 1
+
+      intensity:
+        enabled: true
+        concurrency: 1
+        queue: annotator_5_intensity
+        sample_limit: null
+        batch_size: 1
+
+      adjunct:
+        enabled: true
+        concurrency: 1
+        queue: annotator_5_adjunct
+        sample_limit: null
+        batch_size: 1
+
+      modality:
+        enabled: true
+        concurrency: 1
+        queue: annotator_5_modality
+        sample_limit: null
+        batch_size: 1
+
+      redressal:
+        enabled: true
+        concurrency: 1
+        queue: annotator_5_redressal
+        sample_limit: null
+        batch_size: 1

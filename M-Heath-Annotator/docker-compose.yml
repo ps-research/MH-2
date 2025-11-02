@@ -1,0 +1,76 @@
+version: '3.8'
+
+# ═══════════════════════════════════════════════════════════
+# MENTAL HEALTH ANNOTATION SYSTEM - DOCKER COMPOSE
+# ═══════════════════════════════════════════════════════════
+
+services:
+  # ────────────────────────────────────────────────────────
+  # REDIS - Message Broker & Result Backend
+  # ────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: mh_annotator_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 2gb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - mh_network
+
+  # ────────────────────────────────────────────────────────
+  # FLOWER - Celery Monitoring UI
+  # ────────────────────────────────────────────────────────
+  flower:
+    image: mher/flower:2.0
+    container_name: mh_annotator_flower
+    command: celery --broker=redis://redis:6379/0 flower --port=5555
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - FLOWER_BASIC_AUTH=${FLOWER_USER:-admin}:${FLOWER_PASSWORD:-admin}
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - mh_network
+
+  # ────────────────────────────────────────────────────────
+  # REDIS COMMANDER - Redis Management UI (Optional)
+  # ────────────────────────────────────────────────────────
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: mh_annotator_redis_commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - mh_network
+
+# ════════════════════════════════════════════════════════════
+# VOLUMES
+# ════════════════════════════════════════════════════════════
+volumes:
+  redis_data:
+    driver: local
+
+# ════════════════════════════════════════════════════════════
+# NETWORKS
+# ════════════════════════════════════════════════════════════
+networks:
+  mh_network:
+    driver: bridge
