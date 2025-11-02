@@ -11,19 +11,14 @@ kombu==5.3.4
 pydantic==2.5.3
 pyyaml==6.0.1
 
-# Google AI
+# Google AI (for Gemma model via Gemini API)
 google-genai==0.2.0
 google-generativeai==0.3.2
-
-# Google Sheets API
-gspread==5.12.3
-google-auth==2.25.2
-google-auth-oauthlib==1.2.0
-google-auth-httplib2==0.2.0
 
 # Data Processing
 pandas==2.1.4
 numpy==1.26.2
+openpyxl==3.1.2              # Excel file support (.xlsx)
 
 # Progress Tracking
 tqdm==4.66.1
