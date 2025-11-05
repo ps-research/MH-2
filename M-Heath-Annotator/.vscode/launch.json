@@ -1,0 +1,124 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Single Worker",
+      "type": "python",
+      "request": "launch",
+      "module": "celery",
+      "args": [
+        "-A",
+        "src.core.celery_app",
+        "worker",
+        "-Q",
+        "annotator_1_urgency",
+        "-c",
+        "1",
+        "--loglevel=debug"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Debug Dashboard",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/dashboard.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Debug Excel Viewer",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/excel_viewer.py",
+      "args": [
+        "--annotator",
+        "1",
+        "--domain",
+        "urgency"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Debug Interactive Shell",
+      "type": "python",
+      "request": "launch",
+      "module": "src.cli.interactive",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Debug Start All",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/start_all.py",
+      "args": [
+        "--dry-run"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Debug Admin Script",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/admin.py",
+      "args": [
+        "consolidate"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Debug CLI Commands",
+      "type": "python",
+      "request": "launch",
+      "module": "src.cli.commands",
+      "args": [
+        "worker",
+        "status"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Run Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "tests/",
+        "-v",
+        "--cov=src"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    }
+  ]
+}
