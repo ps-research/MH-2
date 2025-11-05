@@ -45,3 +45,8 @@ python-json-logger==2.0.7
 # Utilities
 python-dotenv==1.0.0
 click==8.1.7
+
+# Session 4: CLI Dashboard & VSCode Integration
+rich==13.7.0                  # TUI dashboard components
+prompt-toolkit==3.0.43        # Interactive shell
+psutil==5.9.7                 # System metrics monitoring

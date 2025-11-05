@@ -1,0 +1,70 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "files.watcherExclude": {
+    "**/data/**": true,
+    "**/.venv/**": true,
+    "**/venv/**": true,
+    "**/__pycache__/**": true,
+    "**/.pytest_cache/**": true
+  },
+  "files.associations": {
+    "*.yaml": "yaml",
+    "*.yml": "yaml",
+    "Makefile": "makefile"
+  },
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/.coverage": true,
+    "**/htmlcov": true
+  },
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "terminal.integrated.env.osx": {
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "terminal.integrated.env.windows": {
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.rulers": [
+      88,
+      120
+    ]
+  },
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": false
+  },
+  "yaml.schemas": {
+    "${workspaceFolder}/config/schema/*.json": "config/*.yaml"
+  },
+  "search.exclude": {
+    "**/data/**": true,
+    "**/venv/**": true,
+    "**/.venv/**": true
+  }
+}

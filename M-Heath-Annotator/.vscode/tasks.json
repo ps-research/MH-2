@@ -1,0 +1,193 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start All Workers",
+      "type": "shell",
+      "command": "python scripts/start_all.py",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Dashboard",
+      "type": "shell",
+      "command": "python scripts/dashboard.py",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Pause Worker (Interactive)",
+      "type": "shell",
+      "command": "python -m src.cli.commands worker pause --annotator ${input:annotatorId} --domain ${input:domainName}",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Resume Worker (Interactive)",
+      "type": "shell",
+      "command": "python -m src.cli.commands worker resume --annotator ${input:annotatorId} --domain ${input:domainName}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Flush Excel Buffer",
+      "type": "shell",
+      "command": "python -m src.cli.commands worker flush --annotator ${input:annotatorId} --domain ${input:domainName}",
+      "problemMatcher": []
+    },
+    {
+      "label": "View Excel File",
+      "type": "shell",
+      "command": "python scripts/excel_viewer.py --annotator ${input:annotatorId} --domain ${input:domainName}",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Verify All Excel Files",
+      "type": "shell",
+      "command": "python -m src.cli.commands excel verify-all",
+      "problemMatcher": []
+    },
+    {
+      "label": "Consolidate Excel Files",
+      "type": "shell",
+      "command": "python -m src.cli.commands admin consolidate",
+      "problemMatcher": []
+    },
+    {
+      "label": "Kill All Workers",
+      "type": "shell",
+      "command": "python -m src.cli.commands worker stop --all",
+      "problemMatcher": []
+    },
+    {
+      "label": "Edit Config",
+      "type": "shell",
+      "command": "code config/${input:configType}.yaml",
+      "problemMatcher": []
+    },
+    {
+      "label": "View Logs",
+      "type": "shell",
+      "command": "tail -f data/logs/*.log",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Reset Domain",
+      "type": "shell",
+      "command": "python scripts/admin.py reset --annotator ${input:annotatorId} --domain ${input:domainName}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Archive Current State",
+      "type": "shell",
+      "command": "python scripts/admin.py archive ${input:archiveName}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Open Excel in Default App",
+      "type": "shell",
+      "command": "${input:platformOpen} data/annotations/annotator_${input:annotatorId}_${input:domainName}.xlsx",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Redis",
+      "type": "shell",
+      "command": "docker-compose up -d redis",
+      "problemMatcher": []
+    },
+    {
+      "label": "Stop Redis",
+      "type": "shell",
+      "command": "docker-compose stop redis",
+      "problemMatcher": []
+    },
+    {
+      "label": "Interactive Shell",
+      "type": "shell",
+      "command": "python -m src.cli.interactive",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "pytest tests/ -v --cov=src",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "annotatorId",
+      "type": "promptString",
+      "description": "Annotator ID (1-5)"
+    },
+    {
+      "id": "domainName",
+      "type": "pickString",
+      "description": "Domain",
+      "options": [
+        "urgency",
+        "therapeutic",
+        "intensity",
+        "adjunct",
+        "modality",
+        "redressal"
+      ]
+    },
+    {
+      "id": "configType",
+      "type": "pickString",
+      "description": "Config type",
+      "options": [
+        "annotators",
+        "domains",
+        "workers",
+        "settings"
+      ]
+    },
+    {
+      "id": "archiveName",
+      "type": "promptString",
+      "description": "Archive name"
+    },
+    {
+      "id": "platformOpen",
+      "type": "pickString",
+      "description": "Platform open command",
+      "options": [
+        "xdg-open",
+        "open",
+        "start"
+      ],
+      "default": "xdg-open"
+    }
+  ]
+}
