@@ -83,3 +83,7 @@ dmypy.json
 *.tmp
 *.temp
 .cache/
+
+M-Heath-Annotator/config/annotators.yaml
+
+*.env

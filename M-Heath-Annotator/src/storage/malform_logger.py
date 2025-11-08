@@ -167,7 +167,7 @@ class MalformLogger:
 
             # Load existing file if it exists
             if file_path.exists():
-                with open(file_path, 'r') as f:
+                with open(file_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
             else:
                 data = {
@@ -333,7 +333,7 @@ class MalformLogger:
             file_path: Path to JSON file
         """
         try:
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
 
             annotator_id = data.get('annotator_id')

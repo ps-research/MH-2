@@ -183,7 +183,6 @@ class CeleryConfig(BaseModel):
     class Config:
         extra = 'forbid'
 
-
 class LoggingConfig(BaseModel):
     """Logging configuration."""
     level: Literal['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'] = Field(default='INFO')
@@ -196,8 +195,46 @@ class LoggingConfig(BaseModel):
         extra = 'forbid'
 
 
+class ModelConfig(BaseModel):
+    """Model configuration."""
+    name: str = Field(..., min_length=1)
+    provider: str = Field(default="google")
+    temperature: float = Field(default=0.0, ge=0.0, le=1.0)
+    max_tokens: int = Field(default=2048, gt=0)
+    timeout: Optional[int] = Field(default=30, gt=0)
+
+    class Config:
+        extra = 'forbid'
+
+
+class DataConfig(BaseModel):
+    """Data source configuration."""
+    source_type: Literal['excel'] = Field(default="excel")
+    excel_path: str = Field(..., min_length=1)
+    sheets: List[str] = Field(default=["Train", "Validation", "Test"])
+    id_column: str = Field(default="Sample_ID")
+    text_column: str = Field(default="Text")
+
+    class Config:
+        extra = 'forbid'
+
+
+class OutputConfig(BaseModel):
+    """Output configuration."""
+    type: Literal['excel'] = Field(default="excel")
+    directory: str = Field(default="data/annotations")
+    buffer_size: Optional[int] = Field(default=10, gt=0)
+    file_template: str = Field(default="annotator_{annotator_id}_{domain}.xlsx")
+
+    class Config:
+        extra = 'forbid'
+
+
 class SettingsConfig(BaseModel):
     """Application settings configuration."""
+    model: ModelConfig
+    data: DataConfig
+    output: OutputConfig
     redis: RedisConfig
     celery: CeleryConfig
     logging: LoggingConfig

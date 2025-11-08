@@ -21,13 +21,13 @@ class ValidationResult:
     label: Optional[str] = None
     parsing_error: Optional[str] = None
     validity_error: Optional[str] = None
-    is_valid: bool = False
 
-    def __post_init__(self):
-        """Automatically set is_valid based on errors."""
-        self.is_valid = (self.parsing_error is None and
-                        self.validity_error is None and
-                        self.label is not None)
+    @property
+    def is_valid(self) -> bool:
+        """Check if validation result is valid."""
+        return (self.parsing_error is None and
+                self.validity_error is None and
+                self.label is not None)
 
 
 # ═══════════════════════════════════════════════════════════

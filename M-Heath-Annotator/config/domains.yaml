@@ -113,7 +113,7 @@ domains:
       YOUR DETAILED ANALYSIS
       ═══════════════════════════════════════════════════════════
     validation:
-      pattern: 'LEVEL[_\s]*([0-4])'
+      pattern: 'LEVEL[_\\s]*([0-4])'
       type: single
       valid_codes:
         - LEVEL_0
@@ -211,7 +211,7 @@ domains:
       YOUR ANALYSIS
       ═══════════════════════════════════════════════════════════
     validation:
-      pattern: 'TA-([1-9])'
+      pattern: "TA-([1-9])"
       type: multi
       valid_codes:
         - TA-1
@@ -295,7 +295,7 @@ domains:
       YOUR ANALYSIS
       ═══════════════════════════════════════════════════════════
     validation:
-      pattern: 'INT-([1-5])'
+      pattern: "INT-([1-5])"
       type: single
       valid_codes:
         - INT-1
@@ -373,7 +373,7 @@ domains:
       YOUR ANALYSIS
       ═══════════════════════════════════════════════════════════
     validation:
-      pattern: 'ADJ-([1-8])|NONE'
+      pattern: "ADJ-([1-8])|NONE"
       type: multi
       valid_codes:
         - ADJ-1
@@ -447,7 +447,7 @@ domains:
       YOUR ANALYSIS
       ═══════════════════════════════════════════════════════════
     validation:
-      pattern: 'MOD-([1-6])'
+      pattern: "MOD-([1-6])"
       type: multi
       valid_codes:
         - MOD-1
@@ -546,7 +546,7 @@ domains:
       YOUR ANALYSIS
       ═══════════════════════════════════════════════════════════
     validation:
-      pattern: '\[.*\]'
+      pattern: '\\[.*\\]'
       type: single
       valid_codes:
         - json_array

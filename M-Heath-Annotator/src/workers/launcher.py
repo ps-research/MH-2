@@ -422,8 +422,15 @@ class WorkerLauncher:
             if force:
                 # Force kill immediately
                 logger.warning(f"Force killing worker {worker_key} (PID {pid})")
-                os.kill(pid, signal.SIGKILL)
-
+                try:
+                    if os.name == 'nt':  # Windows
+                        # On Windows, use SIGTERM (SIGKILL doesn't exist)
+                        os.kill(pid, signal.SIGTERM)
+                    else:  # Unix/Linux/Mac
+                        os.kill(pid, signal.SIGKILL)
+                except (ProcessLookupError, OSError):
+                    # Process already dead, that's fine
+                    pass
             else:
                 # Graceful shutdown
                 logger.info(f"Sending SIGTERM to worker {worker_key} (PID {pid})")
@@ -449,7 +456,15 @@ class WorkerLauncher:
 
                 # Timeout - force kill
                 logger.warning(f"Worker {worker_key} did not stop gracefully, force killing")
-                os.kill(pid, signal.SIGKILL)
+                try:
+                    if os.name == 'nt':  # Windows
+                        # On Windows, use SIGTERM (SIGKILL doesn't exist)
+                        os.kill(pid, signal.SIGTERM)
+                    else:  # Unix/Linux/Mac
+                        os.kill(pid, signal.SIGKILL)
+                except (ProcessLookupError, OSError):
+                    # Process already dead, that's fine
+                    pass
 
             # Wait a bit for kill to take effect
             time.sleep(1.0)

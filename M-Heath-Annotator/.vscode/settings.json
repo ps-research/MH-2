@@ -41,7 +41,7 @@
   },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "[python]": {
     "editor.tabSize": 4,
@@ -57,7 +57,11 @@
   },
   "[markdown]": {
     "editor.wordWrap": "on",
-    "editor.quickSuggestions": false
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
   },
   "yaml.schemas": {
     "${workspaceFolder}/config/schema/*.json": "config/*.yaml"

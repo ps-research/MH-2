@@ -3,7 +3,7 @@ Pydantic models for annotation requests, results, and metrics.
 """
 from datetime import datetime
 from typing import Literal, Optional
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, model_validator
 
 
 class AnnotationRequest(BaseModel):
@@ -102,12 +102,12 @@ class ProgressMetrics(BaseModel):
     avg_task_duration: float = Field(default=0.0, ge=0.0, description="Average task duration in seconds")
     last_updated: datetime = Field(default_factory=datetime.now, description="Last update timestamp")
 
-    @validator('completed')
-    def validate_completed_not_greater_than_total(cls, v, values):
+    @model_validator(mode='after')
+    def validate_completed_total_relationship(self):
         """Ensure completed doesn't exceed total."""
-        if 'total' in values and v > values['total']:
-            raise ValueError(f"Completed ({v}) cannot exceed total ({values['total']})")
-        return v
+        if self.completed > self.total:
+            raise ValueError(f"Completed ({self.completed}) cannot exceed total ({self.total})")
+        return self
 
     @validator('success_rate', pre=True, always=True)
     def calculate_success_rate(cls, v, values):

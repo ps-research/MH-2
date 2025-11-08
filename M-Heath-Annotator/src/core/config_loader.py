@@ -55,14 +55,14 @@ class ConfigLoader:
         if hasattr(self, '_initialized') and self._initialized:
             return
 
-        self.config_dir = Path(config_dir or os.path.join(os.getcwd(), 'M-Heath-Annotator', 'config'))
+        self.config_dir = Path(config_dir or 'config')
 
         # Initialize Redis client
         if redis_client is None:
             # Load basic settings to get Redis config
             settings_path = self.config_dir / 'settings.yaml'
             if settings_path.exists():
-                with open(settings_path, 'r') as f:
+                with open(settings_path, 'r', encoding='utf-8') as f:
                     settings_dict = yaml.safe_load(f)
                     redis_config = settings_dict.get('redis', {})
             else:
@@ -108,7 +108,7 @@ class ConfigLoader:
         if not file_path.exists():
             raise FileNotFoundError(f"Configuration file not found: {file_path}")
 
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             config_dict = yaml.safe_load(f)
 
         # Track file modification time
