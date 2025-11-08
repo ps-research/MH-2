@@ -283,23 +283,22 @@ class ExcelAnnotationManager:
             raise
 
     def flush_buffer(self, annotator_id: int, domain: str) -> None:
-        """
-        Flush write buffer to Excel file.
-
-        Args:
-            annotator_id: Annotator ID
-            domain: Domain name
-        """
         worker_key = self._get_worker_key(annotator_id, domain)
-
+        
         if worker_key not in self._buffers or not self._buffers[worker_key]:
             return
-
-        rows = self._buffers[worker_key]
-        self._buffers[worker_key] = []
-
+        
+        rows = self._buffers[worker_key].copy()  # Make a copy
+        
         logger.info(f"Flushing buffer: {len(rows)} rows for {worker_key}")
-        self.batch_write(annotator_id, domain, rows)
+        
+        try:
+            self.batch_write(annotator_id, domain, rows)
+            # Only clear AFTER successful write
+            self._buffers[worker_key] = []
+        except Exception as e:
+            logger.error(f"Failed to flush buffer, keeping data: {e}")
+            raise
 
     def flush_all_buffers(self) -> None:
         """Flush all write buffers."""

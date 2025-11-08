@@ -16,7 +16,7 @@ model:
 # ────────────────────────────────────────────────────────
 data:
   source_type: excel # Use local Excel file
-  excel_path: "data/source/m_help_dataset.xlsx" # Path to Excel file
+  excel_path: "data/source/m_help_dataset_orig.xlsx" # Path to Excel file
   sheets: # Sheet names to load
     - Train
     - Validation

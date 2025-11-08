@@ -107,6 +107,8 @@ except Exception as e:
 # ═══════════════════════════════════════════════════════════
 
 def setup_queues():
+
+# Import tasks to register them with Celery
     """
     Setup Celery queues for all annotator-domain pairs.
 
@@ -157,6 +159,9 @@ def setup_queues():
 
 # Initialize queues
 setup_queues()
+
+# Import tasks to register them with Celery
+from . import tasks  # noqa: F401
 
 
 # ═══════════════════════════════════════════════════════════
